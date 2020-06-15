@@ -1,6 +1,6 @@
 ARG EMSCRIPTEN_VERSION=1.39.8-upstream
 FROM emscripten/emsdk:${EMSCRIPTEN_VERSION}
-MAINTAINER Tasuku Suzuki
+LABEL maintainer "Tasuku Suzuki <stasuku@gmail.com>"
 
 ARG QT5_REPOSITORY=git://code.qt.io
 ARG QT5_BRANCH=v5.15.0
