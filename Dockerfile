@@ -4,7 +4,7 @@ MAINTAINER Tasuku Suzuki
 
 ARG QT5_REPOSITORY=git://code.qt.io
 ARG QT5_BRANCH=v5.15.0
-ARG QT5_MODULES=qtbase
+ARG QT5_MODULES=qtbase,qtdeclarative
 ARG QTWASMSDK=https://github.com/task-jp/qtwasmsdk
 
 RUN echo ${QT5_REPOSITORY}
