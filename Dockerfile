@@ -39,13 +39,11 @@ RUN echo "## Building Qt for wasm" \
     && make -j$(nproc) > /dev/null 2>&1 \
     && make -j$(nproc) install > /dev/null 2>&1
 
+WORKDIR /root/webserver
+COPY webserver /root/webserver/webserver
+WORKDIR /root/webserver/build
 RUN echo "## Building webserver" \
-    && mkdir -p /root/qtwasmsdk \
-    && cd /root/qtwasmsdk \
-    && git clone ${QTWASMSDK} \
-    && mkdir -p build/webserver \
-    && cd build/webserver \
-    && /opt/qt/local/bin/qmake ../../qtwasmsdk/webserver \
+    && /opt/qt/local/bin/qmake ../webserver/ \
     && make -j$(nproc) \
     && make -j$(nproc) install
 
