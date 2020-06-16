@@ -61,4 +61,4 @@ WORKDIR /app
 COPY entrypoint /opt/qt/
 RUN chmod 755 /opt/qt/entrypoint
 ENTRYPOINT ["/opt/qt/entrypoint"]
-CMD qmake -makefile TARGET=app && make -j$(nproc) && echo "Starting web server" && webserver -a app -p 8080 || echo "I'm sorry."
+CMD qmake -makefile && make -j$(nproc) && echo "Starting web server" && webserver || echo "I'm sorry."

@@ -13,28 +13,20 @@ QByteArray readBinaryFile(const QString &fileName) {
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
-    
-    QCommandLineParser parser;
-    parser.addOptions({
-        {
-	    {"a", "application"}, 
-            QCoreApplication::translate("main", "Application name, Default example"),
-            QCoreApplication::translate("main", "application"),
-            QCoreApplication::translate("main", "example")
-	},
-        {
-	    {"p", "port"}, 
-            QCoreApplication::translate("main", "Port. Default: 8080"),
-            QCoreApplication::translate("main", "port"),
-            QCoreApplication::translate("main", "8080")
-	}
-    });
 
-    parser.process(app);
-    const QString application = parser.value("application");
-    const quint16 port = parser.value("port").toUInt();
+    QString baseName;
+    QDir dir = QDir::current();
+    for (const QString &wasm : dir.entryList({"*.wasm"}, QDir::Files, QDir::Time)) {
+        baseName = QFileInfo(dir.absoluteFilePath(wasm)).baseName();
+        break;
+    }
 
-    QString fileName = QStringLiteral("%3/%1.%2").arg(application);
+    if (baseName.isNull()) {
+        qWarning() << "no *.wasm found";
+        return -1;
+    }
+
+    QString fileName = QStringLiteral("%3/%1.%2").arg(baseName);
 
     QHttpServer server;
     server.route("/", "GET", [&]() {
@@ -52,7 +44,7 @@ int main(int argc, char **argv)
     server.route("/qtlogo.svg", "GET", [&]() {
         return readBinaryFile("qtlogo.svg");
     });
-    server.listen(QHostAddress::Any, port);
+    server.listen(QHostAddress::Any, 8080);
 
     return app.exec();
 }
